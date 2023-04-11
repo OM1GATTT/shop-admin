@@ -47,11 +47,15 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import { adminLogin } from '~/api/http'
-import { ElNotification } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { useCookies } from '@vueuse/integrations/useCookies'
+import { setToken } from "~/utils/auth";
+import { toastSuccess } from "~/utils/toast"
+import { useAdmin } from '~/store/index'
 
 const router = useRouter()
+
+const store = useAdmin()
+const { setStoreToken } = store
 
 const form = reactive({
     username: 'admin',
@@ -82,37 +86,33 @@ const onSubmit = () => {
         if (!valid) {
             return false;
         }
+
         // 发请求
         console.log('验证通过')
         adminLogin(form.username, form.password)
             .then((res) => {
                 console.log(res);
                 // 提示登录成功
-                if (res.data.code == 1) {
+                if (res.code == 1) {
 
                     //将 token 存入cookie
-                    const cookie = useCookies()
-                    cookie.set('admin-token', res.data.data.token)
-
-
-
-                    ElNotification({
-                        message: '登录成功',
-                        type: 'success',
-                        duration: 2000
-                    })
+                    setToken(res.data.token)
+                    setStoreToken(res.data.token)
+                    //弹窗提示
+                    toastSuccess("登录成功")
                 }
 
                 router.push('/')
             })
-            .catch((err) => {
-                ElNotification({
-                    message: '登录失败',
-                    type: 'error',
-                    duration: 2000
-                })
-                console.log(err)
-            })
+
+        // .catch((err) => {
+        //     ElNotification({
+        //         message: '登录失败',
+        //         type: 'error',
+        //         duration: 2000
+        //     })
+        //     console.log(err)
+        // })
     })
 }
 </script>
