@@ -1,6 +1,6 @@
 <template>
     <el-row class="w-full h-screen">
-        <el-col :span="16" :md="12" class="bg-indigo-500 flex flex-col text-white justify-center items-center">
+        <el-col :span="16" class="bg-indigo-500 flex flex-col text-white justify-center items-center">
             <p class="text-light-50 text-5xl font-bold">shop admin</p>
             <p class="text-3xl">shop admin</p>
         </el-col>
@@ -46,10 +46,16 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
+import { adminLogin } from '~/api/http'
+import { ElNotification } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { useCookies } from '@vueuse/integrations/useCookies'
+
+const router = useRouter()
 
 const form = reactive({
-    username: '',
-    password: ''
+    username: 'admin',
+    password: '123456'
 })
 
 const rules = {
@@ -78,6 +84,35 @@ const onSubmit = () => {
         }
         // 发请求
         console.log('验证通过')
+        adminLogin(form.username, form.password)
+            .then((res) => {
+                console.log(res);
+                // 提示登录成功
+                if (res.data.code == 1) {
+
+                    //将 token 存入cookie
+                    const cookie = useCookies()
+                    cookie.set('admin-token', res.data.data.token)
+
+
+
+                    ElNotification({
+                        message: '登录成功',
+                        type: 'success',
+                        duration: 2000
+                    })
+                }
+
+                router.push('/')
+            })
+            .catch((err) => {
+                ElNotification({
+                    message: '登录失败',
+                    type: 'error',
+                    duration: 2000
+                })
+                console.log(err)
+            })
     })
 }
 </script>
