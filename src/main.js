@@ -8,6 +8,7 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue' //图标使用->参考官方文档
 
 import 'virtual:windi.css'
+import 'nprogress/nprogress.css'
 
 import router from './router'
 

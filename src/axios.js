@@ -1,7 +1,8 @@
 // 自定义 axios 实例
 import axios from "axios";
-import { toastError } from "~/utils/toast"
-import { getToken } from "./utils/auth";
+import { toast } from "~/composables/util"
+import { getToken } from "~/composables/auth";
+import { type } from "windicss/utils";
 
 const service = axios.create({
     baseURL: "https://mock.apifox.cn/m1/2571717-0-default"
@@ -30,7 +31,7 @@ service.interceptors.response.use(function (res) {
 }, function (error) {
     //对响应的错误信息进行处理
 
-    toastError("请求错误")
+    toast("请求错误", "error")
 
     return Promise.reject(error)
 })
