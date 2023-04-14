@@ -1,14 +1,15 @@
 <template>
     <div class="v-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-16">
-        <div class="v-center text-xl w-48 ml-2">
+        <div class=" bg-blue-300 h-full v-center text-xl w-48 pl-2">
             <el-icon class="mr-1 text-3xl">
                 <ElementPlus></ElementPlus>
             </el-icon>
             极客空间
         </div>
 
-        <el-icon class="icon-btn">
-            <Fold></Fold>
+        <el-icon class="bg-blue-300 h-full v-center w-7 " @click="handleSideWidth">
+            <Fold v-if="sideWidth === '220px'"></Fold>
+            <Expand v-else></Expand>
         </el-icon>
 
         <div class="v-center ml-auto">
@@ -89,6 +90,7 @@ import FormDrawer from '../../components/FormDrawer.vue';
 const router = useRouter()
 // 刷新
 const handleRefresh = () => location.reload()
+
 const {
     // 是否全屏状态
     isFullscreen,
@@ -96,9 +98,10 @@ const {
     toggle
 } = useFullscreen()
 
+
 const store = useAdminStore()
-const { adminInfo } = storeToRefs(store)
-const { getInfo, adminLogout, updatePassword } = store
+const { adminInfo, sideWidth } = storeToRefs(store)
+const { getInfo, adminLogout, updatePassword, handleSideWidth } = store
 // 登录就根据token获取当前用户信息
 getInfo()
 // 登出方法
@@ -109,6 +112,8 @@ const handleLogout = () => {
         router.push('/login')
     })
 }
+
+const isSideWidth = ref(sideWidth === "220px" ? true : false)
 
 // 修改密码相关
 const formDrawerRef = ref(null)

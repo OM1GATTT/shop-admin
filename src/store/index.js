@@ -6,6 +6,7 @@ export const useAdminStore = defineStore('admin', {
     state: () => ({
         token: '',
         adminInfo: {},
+        sideWidth: '220px'
     }),
     actions: {
         updatePassword(oldpassword, password, repassword) {
@@ -35,6 +36,11 @@ export const useAdminStore = defineStore('admin', {
             removeToken()
             //清空状态
             this.adminInfo = {}
+        },
+
+        // 侧边栏伸缩
+        handleSideWidth() {
+            this.sideWidth = this.sideWidth === '220px' ? '80px' : '220px'
         }
     }
 })
