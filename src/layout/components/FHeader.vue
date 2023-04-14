@@ -36,7 +36,7 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="rePassword">修改密码</el-dropdown-item>
+                        <el-dropdown-item @click="upPassword">修改密码</el-dropdown-item>
                         <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -49,18 +49,19 @@
     </div>
 
     <el-drawer title="修改密码" v-model="showDrawer" size="30%" :close-on-click-modal="false">
-        <el-form label-width="80px">
-            <el-form-item label="旧密码">
-                <el-input placeholder="请输入旧密码"></el-input>
+        <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
+            <el-form-item label="旧密码" prop="oldpassword">
+                <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
             </el-form-item>
-            <el-form-item label="新密码">
-                <el-input type="password" placeholder="请输入密码"></el-input>
+            <el-form-item label="新密码" prop="password">
+                <el-input type="password" placeholder="请输入密码" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码">
-                <el-input type="password" placeholder="请确认密码"></el-input>
+            <el-form-item label="确认密码" prop="repassword">
+                <el-input type="password" placeholder="请确认密码" v-model="form.repassword"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码">
-                <el-button class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
+            <el-form-item>
+                <el-button @click="updatePassword"
+                    class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
             </el-form-item>
         </el-form>
     </el-drawer>
@@ -72,7 +73,7 @@ import { useRouter } from 'vue-router'
 import { showModel, toast } from "~/composables/util"
 import { useAdminStore } from '~/store/index'
 import { useFullscreen } from '@vueuse/core'
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 
 const router = useRouter()
@@ -100,8 +101,58 @@ const handleLogout = () => {
 
 // 修改密码相关
 const showDrawer = ref(false)
-const rePassword = () => {
+const upPassword = () => {
     showDrawer.value = true
+}
+const form = reactive(
+    {
+        oldpassword: '123456',
+        password: 'admin',
+        repassword: 'admin'
+    }
+)
+const formRef = ref(null)
+const rePassRule = (rule, value, callback) => {
+    if (value === '') {
+        callback(new Error('确认密码不能为空！'))
+    } else if (value !== form.password) {
+        callback(new Error('确认密码必须和新密码一致！'))
+    } else {
+        callback()
+    }
+}
+
+const rules = {
+    oldpassword: [
+        {
+            required: true,
+            message: '旧密码不能为空',
+            trigger: 'blur'
+        },
+    ],
+    password: [
+        {
+            required: true,
+            message: '新密码不能为空',
+            trigger: 'blur'
+        },
+    ],
+    repassword: [
+        {
+            validator: rePassRule,
+            trigger: 'blur'
+        }
+    ]
+}
+
+const updatePassword = () => {
+    formRef.value.validate((valid) => {
+        if (!valid) {
+            return false;
+        }
+
+        console.log(1)
+    })
 }
 </script>
 
