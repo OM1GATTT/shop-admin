@@ -12,7 +12,7 @@
         </el-icon>
 
         <div class="v-center ml-auto">
-            <el-icon class="icon-btn">
+            <el-icon class="icon-btn" @click="handleRefresh">
                 <Refresh></Refresh>
             </el-icon>
             <el-icon class="icon-btn" @click="toggle">
@@ -77,7 +77,8 @@ import { reactive, ref } from 'vue';
 
 
 const router = useRouter()
-
+// 刷新
+const handleRefresh = () => location.reload()
 const {
     // 是否全屏状态
     isFullscreen,
