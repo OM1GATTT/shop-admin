@@ -41,11 +41,8 @@
                     </el-dropdown-menu>
                 </template>
 
-
             </el-dropdown>
         </div>
-
-
     </div>
 
     <!-- <el-drawer title="修改密码" v-model="showDrawer" size="30%" :close-on-click-modal="false">
@@ -126,7 +123,6 @@ const form = reactive(
     }
 )
 const formRef = ref(null)
-const loading = ref(false)
 const rePassRule = (rule, value, callback) => {
     if (value === '') {
         callback(new Error('确认密码不能为空！'))
@@ -165,7 +161,7 @@ const changePassword = () => {
         if (!valid) {
             return false;
         }
-        loading.value = true
+        formDrawerRef.value.showLoading()
         setTimeout(() => {
             updatePassword(form.oldpassword, form.password, form.repassword).then((res) => {
                 console.log(res);
@@ -182,7 +178,7 @@ const changePassword = () => {
                 }
             })
                 .finally(() => {
-                    loading.value = false
+                    formDrawerRef.value.hideLoading()
                 })
         }, 1000);
     })

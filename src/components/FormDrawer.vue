@@ -7,9 +7,8 @@
             </div>
 
             <div class="actions">
-                <el-button type="primary" @click="submit">{{ confirmText }}</el-button>
+                <el-button :loading="loading" type="primary" @click="submit">{{ confirmText }}</el-button>
                 <el-button type="default" @click="close">取消</el-button>
-
             </div>
         </div>
     </el-drawer>
@@ -18,6 +17,7 @@
 <script setup>
 import { ref } from 'vue'
 const showDrawer = ref(false)
+const loading = ref(false)
 const props = defineProps({
     title: {
         type: String,
@@ -37,7 +37,8 @@ const props = defineProps({
     }
 })
 
-
+const showLoading = () => loading.value = true
+const hideLoading = () => loading.value = false
 // 打开
 const open = () => showDrawer.value = true
 // 关闭
@@ -48,7 +49,7 @@ const submit = () => emit("submit")
 
 // 向父组件暴露以下方法
 defineExpose({
-    open, close
+    open, close, showLoading, hideLoading
 })
 </script>
 
