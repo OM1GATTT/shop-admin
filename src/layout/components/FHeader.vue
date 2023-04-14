@@ -65,7 +65,7 @@
             </el-form-item>
         </el-form>
     </el-drawer> -->
-    <FormDrawer ref="formDrawerRef" destroyOnClose @submit="changePassword">
+    <FormDrawer ref="formDrawerRef" title="修改密码" size="30%" @submit="changePassword">
         <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
             <el-form-item label="旧密码" prop="oldpassword">
                 <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
@@ -115,7 +115,6 @@ const handleLogout = () => {
 
 // 修改密码相关
 const formDrawerRef = ref(null)
-const showDrawer = ref(false)
 const upPassword = () => {
     formDrawerRef.value.open()
 }
@@ -172,7 +171,7 @@ const changePassword = () => {
                 console.log(res);
                 if (res.code == 1) {
                     toast("修改密码成功，请重新登录")
-                    showDrawer.value = false
+                    formDrawerRef.value.close()
                     // 调用 store 中的 logout 方法
                     adminLogout()
                     // 跳转回登录页
