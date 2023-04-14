@@ -37,7 +37,7 @@
 
                 <el-form-item>
                     <el-button @click="onSubmit" class="w-full py-4 bg-indigo-600 text-white rounded-full" type="primary"
-                        size="default" v-loading="loading">登录</el-button>
+                        size="default" :loading="loading">登录</el-button>
                 </el-form-item>
             </el-form>
         </el-col>

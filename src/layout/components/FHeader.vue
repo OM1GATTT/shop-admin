@@ -60,7 +60,7 @@
                 <el-input type="password" placeholder="请确认密码" v-model="form.repassword"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button @click="updatePassword"
+                <el-button @click="changePassword" :loading="loading"
                     class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
             </el-form-item>
         </el-form>
@@ -87,7 +87,7 @@ const {
 
 const store = useAdminStore()
 const { adminInfo } = storeToRefs(store)
-const { getInfo, adminLogout } = store
+const { getInfo, adminLogout, updatePassword } = store
 // 登录就根据token获取当前用户信息
 getInfo()
 // 登出方法
@@ -112,6 +112,7 @@ const form = reactive(
     }
 )
 const formRef = ref(null)
+const loading = ref(false)
 const rePassRule = (rule, value, callback) => {
     if (value === '') {
         callback(new Error('确认密码不能为空！'))
@@ -145,13 +146,31 @@ const rules = {
     ]
 }
 
-const updatePassword = () => {
+const changePassword = () => {
     formRef.value.validate((valid) => {
         if (!valid) {
             return false;
         }
+        loading.value = true
+        setTimeout(() => {
+            updatePassword(form.oldpassword, form.password, form.repassword).then((res) => {
+                console.log(res);
+                if (res.code == 1) {
+                    toast("修改密码成功，请重新登录")
+                    showDrawer.value = false
+                    // 调用 store 中的 logout 方法
+                    adminLogout()
+                    // 跳转回登录页
+                    router.push("/login")
 
-        console.log(1)
+                } else {
+                    toast(res.msg, 'error')
+                }
+            })
+                .finally(() => {
+                    loading.value = false
+                })
+        }, 1000);
     })
 }
 </script>

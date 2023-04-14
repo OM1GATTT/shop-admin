@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { adminLogin, getInfo, logout } from "../api/admin";
+import { adminLogin, getInfo, logout, updatepassword } from "../api/admin";
 import { setToken, removeToken } from "../composables/auth";
 
 export const useAdminStore = defineStore('admin', {
@@ -8,6 +8,13 @@ export const useAdminStore = defineStore('admin', {
         adminInfo: {},
     }),
     actions: {
+        updatePassword(oldpassword, password, repassword) {
+            return new Promise((resolve, reject) => {
+                updatepassword(oldpassword, password, repassword).then((res) => {
+                    resolve(res)
+                }).catch(err => reject(err))
+            })
+        },
         adminLogin(username, password) {
             return new Promise((resolve, reject) => {
                 adminLogin(username, password).then((res) => {
