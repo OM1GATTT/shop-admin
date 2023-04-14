@@ -48,7 +48,7 @@
 
     </div>
 
-    <el-drawer title="修改密码" v-model="showDrawer" size="30%" :close-on-click-modal="false">
+    <!-- <el-drawer title="修改密码" v-model="showDrawer" size="30%" :close-on-click-modal="false">
         <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
             <el-form-item label="旧密码" prop="oldpassword">
                 <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
@@ -64,7 +64,20 @@
                     class="bg-indigo-500 text-light-50 w-full p-4 rounded-full">提交</el-button>
             </el-form-item>
         </el-form>
-    </el-drawer>
+    </el-drawer> -->
+    <FormDrawer ref="formDrawerRef" destroyOnClose @submit="changePassword">
+        <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
+            <el-form-item label="旧密码" prop="oldpassword">
+                <el-input placeholder="请输入旧密码" v-model="form.oldpassword"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="password">
+                <el-input type="password" placeholder="请输入密码" v-model="form.password"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="repassword">
+                <el-input type="password" placeholder="请确认密码" v-model="form.repassword"></el-input>
+            </el-form-item>
+        </el-form>
+    </FormDrawer>
 </template>
 
 <script setup>
@@ -74,7 +87,7 @@ import { showModel, toast } from "~/composables/util"
 import { useAdminStore } from '~/store/index'
 import { useFullscreen } from '@vueuse/core'
 import { reactive, ref } from 'vue';
-
+import FormDrawer from '../../components/FormDrawer.vue';
 
 const router = useRouter()
 // 刷新
@@ -101,9 +114,10 @@ const handleLogout = () => {
 }
 
 // 修改密码相关
+const formDrawerRef = ref(null)
 const showDrawer = ref(false)
 const upPassword = () => {
-    showDrawer.value = true
+    formDrawerRef.value.open()
 }
 const form = reactive(
     {
