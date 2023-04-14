@@ -4,7 +4,8 @@ import Index from '~/pages/index.vue'
 import Admin from '~/layout/admin.vue'
 import NotFound from '~/pages/404.vue'
 import Login from '~/pages/login.vue'
-
+import GoodsList from '~/pages/goodsList.vue'
+import SystemSetting from '~/pages/systemSetting.vue'
 const routes = [
     {
         path: '/',
@@ -14,9 +15,25 @@ const routes = [
                 path: '/',
                 component: Index,
                 meta: {
-                    title: '首页'
+                    title: '后台首页'
                 }
-            }
+            },
+            {
+                path: '/goods/list',
+                name: 'goods-list',
+                component: GoodsList,
+                meta: {
+                    title: "商品管理"
+                }
+            },
+            {
+                path: '/system/setting',
+                name: 'systen-setting',
+                component: SystemSetting,
+                meta: {
+                    title: "系统设置"
+                }
+            },
         ]
     },
     {

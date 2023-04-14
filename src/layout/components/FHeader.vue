@@ -1,10 +1,16 @@
 <template>
     <div class="v-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-16">
-        <div class=" bg-blue-300 h-full v-center text-xl w-48 pl-2">
+        <div v-if="sideWidth === '220px'" class=" bg-blue-300 h-full v-center text-xl w-48 pl-2">
             <el-icon class="mr-1 text-3xl">
                 <ElementPlus></ElementPlus>
             </el-icon>
-            极客空间
+            <p>极客空间</p>
+        </div>
+
+        <div v-else class=" bg-blue-300 h-full v-center text-xl w-13 pl-2">
+            <el-icon class="mr-1 text-3xl">
+                <ElementPlus></ElementPlus>
+            </el-icon>
         </div>
 
         <el-icon class="bg-blue-300 h-full v-center w-7 " @click="handleSideWidth">
