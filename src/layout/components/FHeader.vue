@@ -1,22 +1,18 @@
 <template>
-    <div class="v-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-16">
-        <div v-if="sideWidth === '220px'" class=" bg-blue-300 h-full v-center text-xl w-48 pl-2">
-            <el-icon class="mr-1 text-3xl">
-                <ElementPlus></ElementPlus>
-            </el-icon>
-            <p>极客空间</p>
-        </div>
+    <div class="v-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0 h-16 transition-all duration-500">
+        <div class="v-center h-full transition-all duration-500" :style="{ width: sideWidth }">
+            <div class=" bg-blue-300 h-full v-center text-xl w-48 pl-2">
+                <el-icon class="mr-1 text-3xl">
+                    <ElementPlus></ElementPlus>
+                </el-icon>
+                <p v-if="sideWidth === '220px'">极客空间</p>
+            </div>
 
-        <div v-else class=" bg-blue-300 h-full v-center text-xl w-13 pl-2">
-            <el-icon class="mr-1 text-3xl">
-                <ElementPlus></ElementPlus>
+            <el-icon class="bg-blue-300 h-full v-center w-7 " @click="handleSideWidth">
+                <Fold v-if="sideWidth === '220px'"></Fold>
+                <Expand v-else></Expand>
             </el-icon>
         </div>
-
-        <el-icon class="bg-blue-300 h-full v-center w-7 " @click="handleSideWidth">
-            <Fold v-if="sideWidth === '220px'"></Fold>
-            <Expand v-else></Expand>
-        </el-icon>
 
         <div class="v-center ml-auto">
             <el-icon class="icon-btn" @click="handleRefresh">

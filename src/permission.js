@@ -1,13 +1,19 @@
-import router from '~/router'
+import { router } from './router'
 
 import { getToken } from '~/composables/auth'
 
 import { toast, showFullLoading, hideFullLoading } from '~/composables/util'
+import { useAdminStore } from './store'
+import { storeToRefs } from 'pinia'
 
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
     //显示loading
     showFullLoading()
+    const store = useAdminStore()
+
+    const { getInfo } = store
+    const { menus } = storeToRefs(store)
 
     const token = getToken()
 
@@ -23,9 +29,19 @@ router.beforeEach((to, from, next) => {
         return next({ path: from.path ? from.path : "/" })
     }
 
+    // 如果用户登录了，则获取用户信息并存储在 pinia 中
+    // let hasNewRoutes = false
+    // if (token) {
+    //     getInfo().then((res) => {
+    //         hasNewRoutes = addRoutes(res.data.menus)
+    //     })
+    // }
+
     // 设置页面标题
     let title = '极客空间 - ' + (to.meta.title ? to.meta.title : '')
     document.title = title
+
+    // hasNewRoutes ? next(to.fullPath) : next()
 
     next()
 })

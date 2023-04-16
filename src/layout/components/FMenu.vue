@@ -38,47 +38,21 @@ import { storeToRefs } from 'pinia';
 import { useAdminStore } from '~/store/index'
 import { ref, reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-
+import { addRoutes } from '../../router';
 const store = useAdminStore()
-const { sideWidth } = storeToRefs(store)
+const { sideWidth, menus } = storeToRefs(store)
 
 const router = useRouter()
 const route = useRoute()
 
 // 默认选中当前路由
 const defaultActive = ref(route.path)
+console.log(defaultActive)
 // 是否折叠
 const isCollapse = computed(() => (sideWidth == '220px'))
 
-const menus = reactive([
-    {
-        "name": "后台面板",
-        "icon": "Help",
-        "child": [
-            {
-                "name": "后台面板",
-                "icon": "HomeFilled",
-                "frontpath": "/"
-            },
-        ]
-    },
-    {
-        "name": "商城管理",
-        "icon": "ShoppingBag",
-        "child": [
-            {
-                "name": "商品管理",
-                "icon": "ShoppingCartFull",
-                "frontpath": "/goods/list"
-            },
-        ]
-    },
-    {
-        "name": "系统设置",
-        "icon": "Setting",
-        "frontpath": "/system/setting"
-    }
-])
+
+addRoutes(menus.value)
 
 const handleSelect = (e) => {
     router.push(e)

@@ -6,7 +6,8 @@ export const useAdminStore = defineStore('admin', {
     state: () => ({
         token: '',
         adminInfo: {},
-        sideWidth: '220px'
+        sideWidth: '220px',
+        menus: []
     }),
     actions: {
         updatePassword(oldpassword, password, repassword) {
@@ -27,7 +28,8 @@ export const useAdminStore = defineStore('admin', {
         async getInfo() {
             const res = await getInfo()
             console.log(res);
-            this.adminInfo = res.data
+            this.adminInfo = res.data.adminInfo
+            this.menus = res.data.menus
         },
         async adminLogout() {
             //调用登出接口

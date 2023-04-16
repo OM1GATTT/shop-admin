@@ -10,7 +10,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue' //图标使用->�
 import 'virtual:windi.css'
 import 'nprogress/nprogress.css'
 
-import router from './router'
+import { router } from './router'
 
 const pinia = createPinia()
 const app = createApp(App)
